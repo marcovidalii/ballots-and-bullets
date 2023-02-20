@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+.responsive-w {
+    @apply lg:w-[60rem] md:w-[45rem] sm:w-[35rem] w-[95vw];
+}
+
+.responsive-text-4xl {
+    @apply md:text-4xl sm:text-2xl text-xl;
+}
+
+.responsive-text-base {
+    @apply md:text-base sm:text-sm text-xs;
+}
+
+.responsive-text-sm {
+    @apply md:text-sm sm:text-xs text-2xs;
+}
+
+.responsive-text-lg {
+    @apply md:text-lg sm:text-base text-sm;
+}
