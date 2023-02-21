@@ -7,9 +7,8 @@ import {
     password,
 } from "$lib/sign-up/stores";
 import { get } from "svelte/store";
-import { currentUser, supabase } from "$lib/common/supabase";
-import { updateCurrentUser } from "$lib/common/utils";
-import { message } from "$lib/common/stores";
+import { currentUser, supabase } from "$lib/supabase";
+import { message } from "$lib/stores";
 
 export const _signUp = async () => {
     // checking passwords
@@ -36,6 +35,9 @@ export const _signUp = async () => {
         password: get(password) as string,
     });
 
+    // updating the user
+    currentUser.set(await supabase.auth.getUser());
+
     // managing error
     if (signUpError) {
         message.set({
@@ -45,9 +47,6 @@ export const _signUp = async () => {
         loading.set(false);
         return;
     }
-
-    // updating current user
-    await updateCurrentUser();
 
     // creating profile
     const { error: profileError } = await supabase

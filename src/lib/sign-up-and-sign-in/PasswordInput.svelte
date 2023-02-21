@@ -9,5 +9,5 @@
     minlength="6"
     type="password"
     required
-    class="input input-bordered w-full responsive-text-base"
+    class="input input-bordered responsive-text-base"
 />

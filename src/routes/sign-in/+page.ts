@@ -1,9 +1,8 @@
 import { goto } from "$app/navigation";
 import { email, loading, password } from "$lib/sign-in/stores";
 import { get } from "svelte/store";
-import { supabase } from "$lib/common/supabase";
-import { updateCurrentUser } from "$lib/common/utils";
-import { message } from "$lib/common/stores";
+import { currentUser, supabase } from "$lib/supabase";
+import { message } from "$lib/stores";
 
 export const _signIn = async () => {
     // emptying message
@@ -21,6 +20,9 @@ export const _signIn = async () => {
         password: get(password) as string,
     });
 
+    // updating the user
+    currentUser.set(await supabase.auth.getUser());
+
     // managing error
     if (signInError) {
         message.set({
@@ -30,9 +32,6 @@ export const _signIn = async () => {
         loading.set(false);
         return;
     }
-
-    // updating current user
-    await updateCurrentUser();
 
     // navigating to index
     goto("/");
