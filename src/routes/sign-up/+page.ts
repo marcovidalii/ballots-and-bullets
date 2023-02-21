@@ -3,13 +3,13 @@ import {
     confirmPassword,
     email,
     loading,
-    message,
     name,
     password,
 } from "$lib/sign-up/stores";
 import { get } from "svelte/store";
 import { currentUser, supabase } from "$lib/common/supabase";
 import { updateCurrentUser } from "$lib/common/utils";
+import { message } from "$lib/common/stores";
 
 export const _signUp = async () => {
     // checking passwords
