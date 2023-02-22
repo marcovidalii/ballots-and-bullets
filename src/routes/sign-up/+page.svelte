@@ -1,18 +1,16 @@
 <script lang="ts">
-    import PasswordInput from "$lib/sign-up-and-sign-in/PasswordInput.svelte";
-    import {
-        name,
-        email,
-        password,
-        confirmPassword,
-        loading,
-    } from "$lib/sign-up/stores";
-    import { _signUp } from "./+page";
+    import PasswordInput from "$lib/sign-up/PasswordInput.svelte";
     import Toast from "$lib/Toast.svelte";
+    import { enhance } from "$app/forms";
+    import type { ActionData } from "./$types";
+
+    export let form: ActionData;
+    let loading = false;
 </script>
 
 <!-- toast -->
-<Toast />
+<Toast {form} />
+
 <!-- container -->
 <div class="h-full flex items-center justify-center">
     <div class="card lg:card-side bg-base-100 shadow-xl responsive-w">
@@ -26,36 +24,47 @@
             </article>
 
             <!-- form -->
-            <form class="flex flex-col gap-2" on:submit={_signUp}>
+            <form
+                class="flex flex-col gap-2"
+                method="post"
+                use:enhance={() => {
+                    form = null;
+                    loading = true;
+                    return async ({ update }) => {
+                        await update({ reset: false });
+                        loading = false;
+                    };
+                }}
+            >
                 <!-- inputs -->
                 <input
                     placeholder="Enter your name..."
                     type="text"
                     class="input input-bordered responsive-text-base"
                     required
-                    bind:value={$name}
+                    name="name"
                 />
                 <input
                     placeholder="Type your email..."
                     type="email"
                     class="input input-bordered responsive-text-base"
                     required
-                    bind:value={$email}
+                    name="email"
                 />
                 <PasswordInput
-                    placeholder="Write your password..."
-                    bind:value={$password}
+                    placeholder="Write a password..."
+                    name="password"
                 />
                 <PasswordInput
                     placeholder="Confirm the password..."
-                    bind:value={$confirmPassword}
+                    name="confirmPassword"
                 />
 
                 <!-- submit -->
                 <button
                     type="submit"
-                    class="btn btn-primary responsive-text-sm {$loading &&
-                        'loading'}">{$loading ? "" : "Sign up"}</button
+                    class="btn btn-primary responsive-text-sm {loading &&
+                        'loading'}">{loading ? "" : "Sign up"}</button
                 >
             </form>
 

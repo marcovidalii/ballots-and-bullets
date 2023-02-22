@@ -1,11 +1,13 @@
 <script lang="ts">
-    import { message } from "$lib/stores";
+    import type { ActionData } from "../routes/sign-up/$types";
+
+    export let form: ActionData;
 </script>
 
 <div class="toast toast-top toast-center w-max responsive-text-base">
-    {#if $message.type === "error"}
+    {#if form?.type === "error"}
         <div class="alert alert-error">
-            <span>{$message.content}</span>
+            <span>{form?.message}</span>
         </div>
     {/if}
 </div>

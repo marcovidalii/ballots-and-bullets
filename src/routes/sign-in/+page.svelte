@@ -1,12 +1,14 @@
 <script lang="ts">
-    import PasswordInput from "$lib/sign-up-and-sign-in/PasswordInput.svelte";
-    import { email, password, loading } from "$lib/sign-in/stores";
-    import { _signIn } from "./+page";
     import Toast from "$lib/Toast.svelte";
+    import { enhance } from "$app/forms";
+    import type { ActionData } from "./$types";
+
+    export let form: ActionData;
+    let loading = false;
 </script>
 
 <!-- toast -->
-<Toast />
+<Toast {form} />
 
 <!-- container -->
 <div class="h-full flex items-center justify-center">
@@ -21,25 +23,40 @@
             </article>
 
             <!-- form -->
-            <form class="flex flex-col gap-2" on:submit={_signIn}>
+            <form
+                class="flex flex-col gap-2"
+                method="post"
+                use:enhance={() => {
+                    form = null;
+                    loading = true;
+                    return async ({ update }) => {
+                        await update({ reset: false });
+                        loading = false;
+                    };
+                }}
+            >
                 <!-- inputs -->
                 <input
                     placeholder="Type your email..."
                     type="email"
                     class="input input-bordered responsive-text-base"
                     required
-                    bind:value={$email}
+                    name="email"
                 />
-                <PasswordInput
+                <input
                     placeholder="Write your password..."
-                    bind:value={$password}
+                    type="password"
+                    class="input input-bordered responsive-text-base"
+                    required
+                    minlength="6"
+                    name="password"
                 />
 
                 <!-- submit -->
                 <button
                     type="submit"
-                    class="btn btn-primary responsive-text-sm {$loading &&
-                        'loading'}">{$loading ? "" : "Sign in"}</button
+                    class="btn btn-primary responsive-text-sm {loading &&
+                        'loading'}">{loading ? "" : "Sign in"}</button
                 >
             </form>
 
