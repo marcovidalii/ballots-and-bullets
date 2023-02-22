@@ -1,6 +1,6 @@
 import "$lib/supabase";
 import { getSupabase } from "@supabase/auth-helpers-sveltekit";
-import type { Handle } from "@sveltejs/kit";
+import { redirect, type Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
     // setting locals
@@ -8,6 +8,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     event.locals.sb = supabaseClient;
     event.locals.session = session;
+
+    // routing traffic
+    if (event.url.pathname === "/") {
+        throw redirect(303, "/sign-up");
+    }
 
     // resolving event
     return resolve(event);
