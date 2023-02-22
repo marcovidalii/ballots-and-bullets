@@ -11,7 +11,30 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     // routing traffic
     if (event.url.pathname === "/") {
-        throw redirect(303, "/sign-up");
+        // user isn't signed in
+        if (!(await event.locals.sb.auth.getUser()).data.user) {
+            throw redirect(303, "/sign-up");
+        }
+
+        // user is signed in and isn't in game
+        let { data } = await event.locals.sb
+            .from("profiles")
+            .select("*")
+            .eq("id", (await event.locals.sb.auth.getUser()).data.user!.id);
+        if (!data![0].is_in_game) {
+            throw redirect(303, "/join-or-create");
+        }
+    }
+
+    if (event.url.pathname === "/join-or-create") {
+        // user is already in a game
+        let { data } = await event.locals.sb
+            .from("profiles")
+            .select("*")
+            .eq("id", (await event.locals.sb.auth.getUser()).data.user!.id);
+        if (data![0].is_in_game) {
+            throw redirect(303, "/");
+        }
     }
 
     // resolving event

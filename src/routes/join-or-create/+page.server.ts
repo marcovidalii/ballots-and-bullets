@@ -47,6 +47,20 @@ export const actions: Actions = {
             };
         }
 
+        // setting is in game
+        const { data: dataa, error: isInGameError } = await locals.sb
+            .from("profiles")
+            .update({ is_in_game: true })
+            .eq("id", (await locals.sb.auth.getUser()).data.user!.id);
+
+        // managing error
+        if (isInGameError) {
+            return {
+                type: "error",
+                message: isInGameError.message,
+            };
+        }
+
         // redirecting to index
         throw redirect(303, "/");
     },
@@ -67,6 +81,20 @@ export const actions: Actions = {
             return {
                 type: "error",
                 message: error.message,
+            };
+        }
+
+        // setting is in game
+        const { error: isInGameError } = await locals.sb
+            .from("profiles")
+            .update({ is_in_game: true })
+            .eq("id", (await locals.sb.auth.getUser()).data.user!.id);
+
+        // managing error
+        if (isInGameError) {
+            return {
+                type: "error",
+                message: isInGameError.message,
             };
         }
 
