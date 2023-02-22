@@ -27,3 +27,7 @@ body {
 .responsive-text-lg {
     @apply md:text-lg sm:text-base text-sm;
 }
+
+.responsive-text-8xl {
+    @apply md:text-8xl sm:text-7xl text-6xl;
+}
