@@ -19,9 +19,9 @@ export const handle: Handle = async ({ event, resolve }) => {
         // user is signed in and isn't in game
         let { data } = await event.locals.sb
             .from("profiles")
-            .select("*")
+            .select("game")
             .eq("id", (await event.locals.sb.auth.getUser()).data.user!.id);
-        if (!data![0].is_in_game) {
+        if (!data![0].game) {
             throw redirect(303, "/join-or-create");
         }
     }
@@ -30,9 +30,10 @@ export const handle: Handle = async ({ event, resolve }) => {
         // user is already in a game
         let { data } = await event.locals.sb
             .from("profiles")
-            .select("*")
+            .select("game")
             .eq("id", (await event.locals.sb.auth.getUser()).data.user!.id);
-        if (data![0].is_in_game) {
+        console.log(data![0].game);
+        if (data![0].game) {
             throw redirect(303, "/");
         }
     }

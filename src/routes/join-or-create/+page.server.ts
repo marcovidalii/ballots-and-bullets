@@ -9,8 +9,7 @@ export const actions: Actions = {
         const { data, error: checkError } = await locals.sb
             .from("games")
             .select("*")
-            .eq("id", body.code)
-            .limit(1);
+            .eq("id", body.code);
 
         // managing error
         if (checkError) {
@@ -21,7 +20,7 @@ export const actions: Actions = {
         }
 
         // managing no game
-        if (data.length === 0) {
+        if (data!.length === 0) {
             return {
                 type: "error",
                 message: "Game doesn't exist",
@@ -30,14 +29,9 @@ export const actions: Actions = {
 
         // joining game
         const { error: joinError } = await locals.sb
-            .from("games")
-            .update({
-                users: [
-                    ...data[0].users,
-                    (await locals.sb.auth.getUser()).data.user!.id,
-                ],
-            })
-            .eq("id", body.code);
+            .from("profiles")
+            .update({ game: body.code })
+            .eq("id", (await locals.sb.auth.getUser()).data.user!.id);
 
         // managing error
         if (joinError) {
@@ -47,34 +41,16 @@ export const actions: Actions = {
             };
         }
 
-        // setting is in game
-        const { data: dataa, error: isInGameError } = await locals.sb
-            .from("profiles")
-            .update({ is_in_game: true })
-            .eq("id", (await locals.sb.auth.getUser()).data.user!.id);
-
-        // managing error
-        if (isInGameError) {
-            return {
-                type: "error",
-                message: isInGameError.message,
-            };
-        }
-
         // redirecting to index
         throw redirect(303, "/");
     },
 
     create: async ({ request, locals }) => {
-        // getting form data
-        const body = Object.fromEntries(await request.formData());
-
         // creating game
-        const { error } = await locals.sb
+        const { data, error } = await locals.sb
             .from("games")
-            .insert([
-                { users: [(await locals.sb.auth.getUser()).data.user!.id] },
-            ]);
+            .insert([{}])
+            .select();
 
         // managing error
         if (error) {
@@ -84,17 +60,17 @@ export const actions: Actions = {
             };
         }
 
-        // setting is in game
-        const { error: isInGameError } = await locals.sb
+        // joining game
+        const { error: joinError } = await locals.sb
             .from("profiles")
-            .update({ is_in_game: true })
+            .update({ game: (data[0] as Game).id })
             .eq("id", (await locals.sb.auth.getUser()).data.user!.id);
 
         // managing error
-        if (isInGameError) {
+        if (joinError) {
             return {
                 type: "error",
-                message: isInGameError.message,
+                message: joinError.message,
             };
         }
 

@@ -16,6 +16,10 @@ declare global {
         }
         // interface Platform {}
     }
+    
+    type Game {
+        id: number;
+    }
 }
 
 export {};
