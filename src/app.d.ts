@@ -16,10 +16,16 @@ declare global {
         }
         // interface Platform {}
     }
-    
-    type Game {
+
+    type Game = {
         id: number;
-    }
+    };
+
+    type Profile = {
+        id: number;
+        name: string;
+        game: number;
+    };
 }
 
 export {};

@@ -32,7 +32,7 @@ export const actions: Actions = {
             .from("profiles")
             .insert([
                 {
-                    user_id: (await locals.sb.auth.getUser()).data.user?.id,
+                    id: (await locals.sb.auth.getUser()).data.user?.id,
                     name: body.name,
                 },
             ]);

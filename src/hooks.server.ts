@@ -32,7 +32,6 @@ export const handle: Handle = async ({ event, resolve }) => {
             .from("profiles")
             .select("game")
             .eq("id", (await event.locals.sb.auth.getUser()).data.user!.id);
-        console.log(data![0].game);
         if (data![0].game) {
             throw redirect(303, "/");
         }
