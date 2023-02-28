@@ -80,7 +80,7 @@
 <div class="h-full flex items-center justify-center">
     <div class="card lg:card-side bg-base-100 shadow-xl responsive-w">
         <!-- body -->
-        <div class="card-body flex gap-6">
+        <div class="card-body flex gap-4">
             <!-- title -->
             <article class="prose">
                 <h1 class="text-primary responsive-text-4xl">Game lobby</h1>

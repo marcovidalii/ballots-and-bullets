@@ -17,8 +17,10 @@
     });
 </script>
 
-<div class="h-full lg:flex lg:flex-col">
-    <slot />
+<div class="h-full w-full lg:flex lg:flex-col">
+    <div class="p-12 w-full h-full">
+        <slot />
+    </div>
     <!-- footer -->
     <footer class="footer footer-center p-4 bg-primary text-primary-content">
         <div>
