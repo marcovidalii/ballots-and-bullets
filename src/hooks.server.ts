@@ -9,9 +9,11 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals.sb = supabaseClient;
     event.locals.session = session;
 
-    // user isn't signed in
-    if (!(await event.locals.sb.auth.getUser()).data.user) {
-        throw redirect(303, "/sign-up");
+    if (!["/sign-up", "/sign-in"].includes(event.url.pathname)) {
+        // user isn't signed in
+        if (!(await event.locals.sb.auth.getUser()).data.user) {
+            throw redirect(303, "/sign-up");
+        }
     }
 
     if (event.url.pathname === "/") {

@@ -16,7 +16,13 @@
             "postgres_changes",
             { event: "UPDATE", schema: "public", table: "profiles" },
             async () => {
-                // checking if payload game is the same
+                await invalidateAll();
+            }
+        )
+        .on(
+            "postgres_changes",
+            { event: "UPDATE", schema: "public", table: "games" },
+            async () => {
                 await invalidateAll();
             }
         )
