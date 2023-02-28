@@ -9,14 +9,13 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals.sb = supabaseClient;
     event.locals.session = session;
 
-    // routing traffic
-    if (event.url.pathname === "/") {
-        // user isn't signed in
-        if (!(await event.locals.sb.auth.getUser()).data.user) {
-            throw redirect(303, "/sign-up");
-        }
+    // user isn't signed in
+    if (!(await event.locals.sb.auth.getUser()).data.user) {
+        throw redirect(303, "/sign-up");
+    }
 
-        // user is signed in and isn't in game
+    if (event.url.pathname === "/") {
+        // user isn't in game
         let isInGame = (
             await event.locals.sb
                 .from("profiles")
@@ -27,7 +26,7 @@ export const handle: Handle = async ({ event, resolve }) => {
             throw redirect(303, "/join-or-create");
         }
 
-        // user is in game and it isn't started
+        // user game isn't started
         const currentGame = (
             await event.locals.sb
                 .from("profiles")
@@ -46,12 +45,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
 
     if (event.url.pathname === "/join-or-create") {
-        // user isn't signed in
-        if (!(await event.locals.sb.auth.getUser()).data.user) {
-            throw redirect(303, "/");
-        }
-
-        // user is already in a game
+        // user is in game
         let isInGame = (
             await event.locals.sb
                 .from("profiles")
@@ -64,11 +58,6 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
 
     if (event.url.pathname === "/lobby") {
-        // user isn't signed in
-        if (!(await event.locals.sb.auth.getUser()).data.user) {
-            throw redirect(303, "/");
-        }
-
         // user isn't in game
         let isInGame = (
             await event.locals.sb
@@ -80,7 +69,7 @@ export const handle: Handle = async ({ event, resolve }) => {
             throw redirect(303, "/");
         }
 
-        // user is in game and it is started
+        // user game is started
         const currentGame = (
             await event.locals.sb
                 .from("profiles")
