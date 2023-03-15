@@ -86,6 +86,10 @@
                 <h1 class="text-primary responsive-text-4xl">Game lobby</h1>
             </article>
 
+            <h1 class="text-primary responsive-text-lg font-bold">
+                Code: {data.currentGame}
+            </h1>
+
             <!-- players -->
             <hr />
             {#each data.players as player}

@@ -22,6 +22,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 
     return {
         players: players,
+        currentGame: currentGame,
     };
 };
 
