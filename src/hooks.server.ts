@@ -17,8 +17,6 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
 
     if (event.url.pathname === "/") {
-        console.log(await event.locals.sb.from("profiles").select("*"));
-
         // user isn't in game
         let isInGame = (
             await event.locals.sb
