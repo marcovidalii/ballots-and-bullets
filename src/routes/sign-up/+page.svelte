@@ -79,7 +79,7 @@
 
         <!-- image -->
         <figure
-            class="bg-primary bg-top w-1/2 bg-[url('/sign-up/old-politician.png')] bg-cover"
+            class="bg-primary bg-top w-1/2 bg-[url('/images/old-politician.png')] bg-cover"
         />
     </div>
 </div>

@@ -45,7 +45,7 @@ export const actions: Actions = {
         throw redirect(303, "/");
     },
 
-    create: async ({ request, locals }) => {
+    create: async ({ locals }) => {
         // creating game
         const { data, error } = await locals.sb
             .from("games")

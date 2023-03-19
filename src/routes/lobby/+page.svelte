@@ -107,7 +107,7 @@
 
         <!-- image -->
         <figure
-            class="bg-primary bg-top w-1/2 bg-[url('/join-or-create/parliament.png')] bg-cover"
+            class="bg-primary bg-top w-1/2 bg-[url('/images/parliament.png')] bg-cover"
         />
     </div>
 </div>

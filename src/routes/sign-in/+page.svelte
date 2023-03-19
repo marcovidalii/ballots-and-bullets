@@ -71,7 +71,7 @@
 
         <!-- image -->
         <figure
-            class="bg-primary bg-top w-1/2 bg-[url('/sign-in/middle-aged-politician.png')] bg-cover"
+            class="bg-primary bg-top w-1/2 bg-[url('/images/middle-aged-politician.png')] bg-cover"
         />
     </div>
 </div>
